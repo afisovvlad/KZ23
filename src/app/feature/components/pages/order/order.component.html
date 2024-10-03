@@ -1,0 +1,69 @@
+<form class="form pt-5 pb-5" [formGroup]="orderForm">
+  <div class="form-title text-center fs-2 fw-bold mb-5">
+    Сделать заказ
+  </div>
+
+  <div class="form-block my-0 mx-auto" id="form-block">
+    <div class="row row-gap-3 column-gap-3 p-0">
+      <div class="col p-0">
+        <div class="mb-2 form-div">Имя</div>
+        <input type="text" class="w-100 form-input form-control" formControlName="name">
+
+      </div>
+
+      <div class="col p-0">
+        <div class="mb-2 form-div">Фамилия</div>
+        <input type="text" class="w-100 form-input form-control" formControlName="lastName">
+      </div>
+
+      <div class="col p-0">
+        <div class="mb-2 form-div">Телефон</div>
+        <input type="text" class="w-100 form-input form-control" prefix="+7 " mask="(000) 000 00 00" name="phone" formControlName="phone">
+      </div>
+
+      <div class="row my-0 mx-auto row-gap-3 column-gap-3 p-0">
+        <div class="col p-0">
+          <div class="mb-2 form-div">Страна</div>
+          <input type="text" class="w-100 form-input form-control" formControlName="country">
+        </div>
+
+        <div class="col p-0">
+          <div class="mb-2 form-div">Индекс</div>
+          <input type="text" class="w-100 form-input form-control" formControlName="zipcode">
+        </div>
+      </div>
+
+      <div class="row my-0 mx-auto row-gap-3 column-gap-3 p-0">
+        <div class="col p-0">
+          <div class="mb-2 form-div">Товар</div>
+          <input type="text" class="w-100 form-input form-control" name="product" formControlName="product">
+        </div>
+      </div>
+
+      <div class="row my-0 mx-auto row-gap-3 column-gap-3 p-0">
+        <div class="col p-0">
+          <div class="mb-2 form-div">Адрес</div>
+          <input type="text" class="w-100 form-input form-control" formControlName="address">
+          @if (addressControl.hasError('required') && addressControl.dirty) {
+            <div>
+              Это поле обязательно к заполнению
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="row my-0 mx-auto row-gap-3 column-gap-3 p-0">
+        <div class="col p-0">
+          <div class="mb-2 form-div">Комментарий к заказу</div>
+          <textarea type="text" class="w-100 form-input form-control"  formControlName="comment"></textarea>
+        </div>
+      </div>
+    </div>
+    <button class="button hvr-shrink bg-primary border-0 text-center rounded-1 text-white text-end mt-4"
+            id="form-button" (click)="clickToFormButton()">
+      Отправить
+    </button>
+    <div [class]="{'text-danger': true, 'd-inline-block': orderResponse?.success === 0, 'd-none': orderResponse === null || orderResponse.success === 1}">Произошла ошибка. Попробуйте еще раз.</div>
+  </div>
+</form>
+

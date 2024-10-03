@@ -1,0 +1,36 @@
+.product-item {
+  border-color: #E3E3E3;
+  width: 416px !important;
+}
+
+.product-item-description {
+  width: 360px;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.product-item-button {
+  width: 170px;
+  height: 38px;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 863px) {
+  .product-item-description {
+    max-height: 200px;
+  }
+}
+
+@media screen and (max-width: 615px) {
+  .product-item-image {
+    width: auto;
+  }
+
+  .product-item-image img {
+    width: 100%;
+  }
+
+  .product-item-description {
+    width: auto;
+  }
+}

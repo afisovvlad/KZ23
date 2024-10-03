@@ -1,0 +1,24 @@
+.product-item {
+  width: 50%;
+}
+
+.product-item-description {
+  max-height: 355px;
+  overflow-y: scroll;
+}
+
+@media screen and (max-width: 900px) {
+  .product-item {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .product-item {
+    width: 100%;
+  }
+
+  .product-item-description {
+    max-height: 300px;
+  }
+}

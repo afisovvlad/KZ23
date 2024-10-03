@@ -1,0 +1,21 @@
+.slider {
+  padding: 72px 0;
+}
+
+.slider-image {
+  max-width: 1318px;
+}
+
+.slider-image img {
+  width: 100%;
+}
+
+@media screen and (max-width: 400px) {
+  .down {
+    display: none !important;
+  }
+
+  .up {
+    display: none !important;
+  }
+}

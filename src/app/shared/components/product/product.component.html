@@ -1,0 +1,21 @@
+<div class="product-item d-flex flex-column border border-1 md- rounded-1 my-5 mx-auto">
+  <a class="product-item-image" href="{{currentProduct?.image}}">
+    <img src="{{currentProduct?.image}}"  class="w-100">
+  </a>
+  <div class="product-info p-3">
+    <div class="product-item-title fs-5 fw-bold mb-2">
+      {{currentProduct?.title}}
+    </div>
+
+    <div class="product-item-description fs-6 mb-4">
+      {{currentProduct?.description}}
+    </div>
+    <div class="low-panel d-flex align-items-center justify-content-between">
+      <button class="product-item-button btn hvr-grow bg-primary border-0 text-center rounded-1 text-white" [routerLink]="['/order']" [queryParams]="{id: currentProduct?.id}">
+        Купить
+      </button>
+
+      <div class="price">{{currentProduct?.price}}р</div>
+    </div>
+  </div>
+</div>
