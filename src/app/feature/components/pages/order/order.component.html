@@ -1,4 +1,4 @@
-<form class="form pt-5 pb-5" [formGroup]="orderForm">
+<form class="form pt-5 pb-5" [formGroup]="orderForm" (ngSubmit)="clickToFormButton()">
   <div class="form-title text-center fs-2 fw-bold mb-5">
     Сделать заказ
   </div>
@@ -8,28 +8,82 @@
       <div class="col p-0">
         <div class="mb-2 form-div">Имя</div>
         <input type="text" class="w-100 form-input form-control" formControlName="name">
-
+        @if (nameControl?.touched || nameControl?.dirty) {
+          @if (nameControl?.hasError('required')) {
+            <div class="text-danger">
+              Это поле обязательно к заполнению
+            </div>
+          } @else if (nameControl?.hasError('pattern')) {
+            <div class="text-danger">
+              Это поле может содержать только Русские буквы
+            </div>
+          }
+        }
       </div>
 
       <div class="col p-0">
         <div class="mb-2 form-div">Фамилия</div>
         <input type="text" class="w-100 form-input form-control" formControlName="lastName">
+        @if (lastNameControl?.touched || lastNameControl?.dirty) {
+          @if (lastNameControl?.hasError('required')) {
+            <div class="text-danger">
+              Это поле обязательно к заполнению
+            </div>
+          } @else if (lastNameControl?.hasError('pattern')) {
+            <div class="text-danger">
+              Это поле может содержать только Русские буквы
+            </div>
+          }
+        }
       </div>
 
       <div class="col p-0">
         <div class="mb-2 form-div">Телефон</div>
         <input type="text" class="w-100 form-input form-control" prefix="+7 " mask="(000) 000 00 00" name="phone" formControlName="phone">
+        @if (phoneControl?.touched || phoneControl?.dirty) {
+          @if (phoneControl?.hasError('required')) {
+            <div class="text-danger">
+              Это поле обязательно к заполнению
+            </div>
+          } @else if (phoneControl?.hasError('minlength')) {
+            <div class="text-danger">
+              Введите корректный номер телефона
+            </div>
+          }
+        }
       </div>
 
       <div class="row my-0 mx-auto row-gap-3 column-gap-3 p-0">
         <div class="col p-0">
           <div class="mb-2 form-div">Страна</div>
           <input type="text" class="w-100 form-input form-control" formControlName="country">
+          @if (countryControl?.touched || countryControl?.dirty) {
+            @if (countryControl?.hasError('required')) {
+              <div class="text-danger">
+                Это поле обязательно к заполнению
+              </div>
+            }
+          }
         </div>
 
         <div class="col p-0">
           <div class="mb-2 form-div">Индекс</div>
           <input type="text" class="w-100 form-input form-control" formControlName="zipcode">
+          @if (zipcodeControl?.touched || zipcodeControl?.dirty) {
+            @if (zipcodeControl?.hasError('required')) {
+              <div class="text-danger">
+                Это поле обязательно к заполнению
+              </div>
+            } @else if (zipcodeControl?.hasError('pattern')) {
+              <div class="text-danger">
+                Это поле может содержать только цифры
+              </div>
+            } @else if (zipcodeControl?.hasError('minlength') || zipcodeControl?.hasError('maxlength')) {
+              <div  class="text-danger">
+                Это поле должно содержать 6 цифр
+              </div>
+            }
+          }
         </div>
       </div>
 
@@ -37,6 +91,13 @@
         <div class="col p-0">
           <div class="mb-2 form-div">Товар</div>
           <input type="text" class="w-100 form-input form-control" name="product" formControlName="product">
+          @if (productControl?.touched || productControl?.dirty) {
+            @if (productControl?.hasError('required')) {
+              <div class="text-danger">
+                Это поле обязательно к заполнению
+              </div>
+            }
+          }
         </div>
       </div>
 
@@ -44,10 +105,12 @@
         <div class="col p-0">
           <div class="mb-2 form-div">Адрес</div>
           <input type="text" class="w-100 form-input form-control" formControlName="address">
-          @if (addressControl.hasError('required') && addressControl.dirty) {
-            <div>
-              Это поле обязательно к заполнению
-            </div>
+          @if (addressControl?.touched || addressControl?.dirty) {
+            @if (addressControl?.hasError('required')) {
+              <div class="text-danger">
+                Это поле обязательно к заполнению
+              </div>
+            }
           }
         </div>
       </div>
@@ -60,10 +123,10 @@
       </div>
     </div>
     <button class="button hvr-shrink bg-primary border-0 text-center rounded-1 text-white text-end mt-4"
-            id="form-button" (click)="clickToFormButton()">
+            id="form-button">
       Отправить
     </button>
-    <div [class]="{'text-danger': true, 'd-inline-block': orderResponse?.success === 0, 'd-none': orderResponse === null || orderResponse.success === 1}">Произошла ошибка. Попробуйте еще раз.</div>
+    <div [class]="{'badResponseMessage': true, 'text-danger': true, 'd-block': orderResponse?.success === 0, 'd-none': orderResponse === null || orderResponse.success === 1}" disabled="orderForm.invalid || orderForm.disabled">Произошла ошибка. Попробуйте еще раз.</div>
   </div>
 </form>
 

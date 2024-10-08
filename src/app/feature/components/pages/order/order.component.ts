@@ -1,13 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormGroup,
   Validators
 } from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs";
-import { provideNgxMask} from "ngx-mask";
+import {provideNgxMask} from "ngx-mask";
 import {ProductService} from '../../../../services/product.service';
 import {ResponseOrder} from '../../../../../types/responseOrder.type';
 import {OrderService} from '../../../../services/order.service';
@@ -32,26 +31,55 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private productService: ProductService, private orderService: OrderService) {
     this.orderForm = this.fb.group({
-      name: [null, [Validators.required, Validators.pattern('[а-яА-Я]')]],
-      lastName: [null, [Validators.required, Validators.pattern('[а-яА-Я]')]],
-      phone: [null, [Validators.required, Validators.minLength(18)]],
-      country: [null, [Validators.required]],
-      zipcode: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
-      product: [null, {
-        validators: Validators.required,
-        disabled: true
-      }],
-      address: [null, [Validators.required, Validators.pattern('[а-яА-Я0-9-/]')]],
-      comment: [null],
-    })
+        name: ['', {
+          validators: [Validators.required, Validators.pattern(/^[а-яА-Я]+$/)]
+        }],
+        lastName: [null, [Validators.required, Validators.pattern(/^[а-яА-Я]+$/)]],
+        phone: [null, [Validators.required, Validators.minLength(10)]],
+        country: [null, Validators.required],
+        zipcode: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
+        product: [null, {
+          validators: Validators.required,
+          disabled: true
+        }],
+        address: [null, [Validators.required, Validators.pattern(/^[a-zA-Zа-яА-ЯёЁ0-9 \-]+$/)]],
+        comment: [null],
+      },
+      {
+        updateOn: "blur"
+      });
   }
 
-  get addressControl(): AbstractControl {
-    return this.orderForm.controls['address'];
+  get addressControl() {
+    return this.orderForm.get('address');
   }
 
-  get productControl(): AbstractControl {
-    return this.orderForm.controls['product'];
+  get productControl() {
+    return this.orderForm.get('product');
+  }
+
+  get nameControl() {
+    return this.orderForm.get('name');
+  }
+
+  get lastNameControl() {
+    return this.orderForm.get('lastName');
+  }
+
+  get phoneControl() {
+    return this.orderForm.get('phone');
+  }
+
+  get countryControl() {
+    return this.orderForm.get('country');
+  }
+
+  get zipcodeControl() {
+    return this.orderForm.get('zipcode');
+  }
+
+  get commentControl() {
+    return this.orderForm.get('comment');
   }
 
   ngOnInit() {
@@ -66,19 +94,19 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   clickToFormButton(): false | void {
-    if (!this.orderForm.valid) {
+    if (this.orderForm.valid) {
       const dataOrder: DataOrderType = {
-        name: this.orderForm.get('name')?.value,
-        last_name: this.orderForm.get('lastName')?.value,
-        phone: this.orderForm.get('phone')?.value,
-        country: this.orderForm.get('country')?.value,
-        zip: this.orderForm.get('zipcode')?.value,
-        product: this.orderForm.get('product')?.value,
-        address: this.orderForm.get('address')?.value,
+        name: this.nameControl?.value,
+        last_name: this.lastNameControl?.value,
+        phone: this.phoneControl?.value,
+        country: this.countryControl?.value,
+        zip: this.zipcodeControl?.value,
+        product: this.productControl?.value,
+        address: this.addressControl?.value,
       }
 
-      if (this.orderForm.get('comment')?.value) {
-        dataOrder.comment = this.orderForm.get('comment')?.value;
+      if (this.commentControl?.value) {
+        dataOrder.comment = this.commentControl?.value;
       }
 
       this.subs.add(this.orderService.orderRequest(dataOrder).subscribe((response: ResponseOrder) => {
@@ -92,7 +120,7 @@ export class OrderComponent implements OnInit, OnDestroy {
         }
       }));
     } else {
-      return false;
+      this.orderForm.markAllAsTouched();
     }
   };
 
