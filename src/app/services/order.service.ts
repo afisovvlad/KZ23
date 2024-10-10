@@ -10,7 +10,7 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
-  orderRequest(data: DataOrderType): Observable<any> {
-    return this.http.post('https://testologia.ru/order-tea', data);
+  orderRequest(data: DataOrderType): Observable<ResponseType> {
+    return this.http.post<ResponseType>('https://testologia.ru/order-tea', data);
   }
 }
